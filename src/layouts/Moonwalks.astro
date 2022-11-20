@@ -1,0 +1,31 @@
+---
+import ThemeToggle from './../components/ThemeToggle.astro';
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Moonwalks</title>
+    <link rel="stylesheet" href="/css/style.css" />
+	</head>
+	<body>
+    <div class="header">
+      <div class="container">
+        <div class="float-end">
+          <ThemeToggle />
+        </div>
+        <img class="header-icon" src="/img/bot-icon.png" height="48" />
+        <a href="/"><b>Moonwalks</b></a>
+      </div>
+    </div>
+		<div class="container page-content">
+      <slot />
+    </div>
+    <div class="footer">
+      <div class="container" style="position:relative;">
+        <div class="moon"></div>
+        This site is using <img src="/favicon.svg" height="22" style="vertical-align:middle;" /> <a href="https://astro.build" target="_blank">Astro</a>.
+      </div>
+    </div>
+	</body>
+</html>

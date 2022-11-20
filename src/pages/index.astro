@@ -1,0 +1,22 @@
+---
+import moment from 'moment';
+import Layout from './../layouts/Moonwalks.astro';
+import TagList from './../components/TagList.astro';
+import { getMoonwalks } from './../lib/moonwalker.js';
+const moonwalks = await getMoonwalks(import.meta.env.GUILD_ID);
+---
+
+<Layout>
+	<h1>Moonwalks</h1>
+
+	<p>List of published threads from Discord Forums</p>
+
+	{moonwalks.map(mw => (
+		<div class="moonwalk">
+			<div class="published">published {moment(mw.published).fromNow()}</div>
+			<div class="title">{mw.cat} &gt; <a href={`/moonwalks/${mw.key}`}>{mw.title}</a></div>
+			<TagList tags={mw.tags} />
+		</div>
+	))}
+
+</Layout>

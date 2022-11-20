@@ -1,0 +1,13 @@
+---
+const { msg } = Astro.props;
+---
+<div class="attachments">
+  {msg.attachments && msg.attachments.map((attach) => (
+    <div class="item">
+      <a href={attach.url} target="_blank">
+        <img src={attach.url} height="140" />
+        <br/>{attach.contentType}
+      </a>
+    </div>
+  ))}
+</div>

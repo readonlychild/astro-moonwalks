@@ -1,0 +1,12 @@
+---
+const { msg } = Astro.props;
+---
+<div class="embeds">
+  {msg.embeds && msg.embeds.map((embed) => (
+    <div class="item">
+      <a href={embed.url} target="_blank">
+        { embed.thumbnail ? (<img src={embed.thumbnail.url} height="220" />) : (<img src={embed.url} height="140" />) }
+      </a>
+    </div>
+  ))}
+</div>

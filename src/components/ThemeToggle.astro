@@ -1,0 +1,24 @@
+---
+---
+<span class="theme-lightdark">
+  <i class="svg-path fa-sun actionable" id="makeLight"></i> 
+  <i class="svg-path fa-moon actionable" id="makeDark"></i>
+</span>
+<script type="text/javascript">
+  document.getElementById('makeLight').addEventListener('click', function () {
+    document.body.classList.remove('dark');
+    document.body.classList.add('light');
+    localStorage.setItem('theme', 'light');
+  });
+  document.getElementById('makeDark').addEventListener('click', function () {
+    document.body.classList.add('dark');
+    document.body.classList.remove('light');
+    localStorage.setItem('theme', 'dark');
+  });
+  document.body.classList.add(localStorage.getItem('theme'));
+</script>
+<style>
+.theme-lightdark { padding:2px 5px; display:inline-block; border-radius:32px; font-size:1.25em; }
+.theme-lightdark .fa-sun { color:var(--color-fg); }
+.theme-lightdark .fa-moon { color:var(--color-dim); }
+</style>

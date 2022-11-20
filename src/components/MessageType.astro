@@ -1,0 +1,8 @@
+---
+const { msg } = Astro.props;
+---
+<div class="msg-type">
+  {msg.type === 0 ? '' : (
+    <span>{msg.type}</span>
+  )}
+</div>

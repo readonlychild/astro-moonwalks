@@ -1,0 +1,71 @@
+---
+import Layout from './../../layouts/Moonwalks.astro';
+import { getMoonwalks, getMoonwalk } from './../../lib/moonwalker.js';
+import MessageType from './../../components/MessageType.astro';
+import MessageAttachments from './../../components/MessageAttachments.astro';
+import MessageEmbeds from './../../components/MessageEmbeds.astro';
+import TagList from './../../components/TagList.astro';
+import Markdown from '@astrojs/markdown-component';
+
+export async function getStaticPaths() {
+  const moonwalks = await getMoonwalks(import.meta.env.GUILD_ID);
+  let ary = [];
+  moonwalks.forEach((mw) => {
+    ary.push({
+      params: {
+        key: mw.key
+      }
+    })
+  });
+  return ary;
+}
+
+const moonkey = Astro.params.key;
+const moonwalk = await getMoonwalk(moonkey);
+---
+
+<Layout>
+	<h1>{moonwalk.name}</h1>
+  {moonwalk.guildName} / {moonwalk.cat}
+  | {moonwalk.title}
+  <br/><br/>
+  <div class="action-bar">
+    <span class="badge">{ moonwalk.messageCount } messages</span>
+    <span class="badge">{ moonwalk.memberCount } members</span>
+    | <a target="moonwalk_view" href={`https://discord.com/channels/${moonwalk.key}`}>View</a>
+    | <a href="/">Back to List</a>
+  </div>
+  <br/>
+  <TagList tags={moonwalk.tags} />
+  {moonwalk.tags.length ? (<br/>) : ''}
+  <div class="message-list">
+    {moonwalk.messages.map((msg) => (
+      <img class="avatar" width="48" src={msg.author.avatar} />
+      <div class={`message ${msg.isSolution ? 'solution' : ''}`}>
+        <div class="info">
+          <span class="user">{msg.author.username}</span> <span class="created" data-tick={msg.created}>{new Date(msg.created).toString()}</span>
+        </div>
+        <div class="content">
+          <MessageType msg={msg} />
+          <Markdown>{msg.content}</Markdown>
+          <MessageEmbeds msg={msg} />
+          <MessageAttachments msg={msg} />
+        </div>
+        <div class="foot">
+          <a class="jumplink" target="moonwalk_view" href={`https://discord.com/channels/${moonwalk.key}/${msg.id}`}>jump</a>
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+<script is:inline>
+  let times = document.querySelectorAll('span[data-tick]');
+  times.forEach((span) => {
+    console.log(span);
+    let tick = span.getAttribute('data-tick');
+    let djs = moment(parseInt(tick));
+    span.innerHTML = ' | ' + djs.fromNow() + ' | ' + djs.format('lll');
+  });
+</script>
