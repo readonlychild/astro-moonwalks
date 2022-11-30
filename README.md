@@ -1,59 +1,89 @@
 # Astro Moonwalks
 
-This is a sidekick project to the Discord Bot [Moonwalker](https://github.com/readonlychild/moonwalker).
+This is a sidekick project to the Discord Bot [Moonwalker](https://github.com/readonlychild/moonwalker), the discord bot that serializes discord forum threads to JSON.
 
-**Moonwalker** serializes discord forum threads to JSON.
+# How to use this project
 
-# Self Hosting
+The following steps are required regardless of the configuration of the Moonwalker bot.
 
-Instructions to get a site running and process your Moonwalks!
-
-```
+```bash
+# grab a copy of the project
 git clone https://github.com/readonlychild/astro-moonwalks.git
+# go into project folder
 cd astro-moonwalks
+# install dependencies
 npm install
 ```
 
-# Configuration
+## With the hosted version of Moonwalker
 
-Now the configuration steps. These go into `mm`
+Pairing this project to a discord server where Moonwalker has been setup and some threads have been published.
 
-```rb
-GUILD_ID=Your discord server id
-MOONWALK_MODE=s3 # or fs
-S3_BUCKET_PREFIX=Your bucket+prefix url access point
-FS_PATH=\moonwalker-bot\records
+- Rename file `.env.s3` to `.env`
+- Paste your discord server ID into the `GUILD_ID` variable and save the file.
+
+These steps are all that is needed. 
+
+
+## With your self-hosted Moonwalker
+
+When you are running your own version or Moonwalker, you must have configured it to serialize the moonwalks into either an S3 bucket, or the bot's filesystem. 
+
+> [2022.11] There could potentially be other modes of serialization that could be considered more advanced.
+
+### S3 mode
+
+If you configured your Moonwalker to use S3 mode, then you can use the `.env.s3` file.
+
+- Rename file `.env.s3` to `.env`
+- Paste your discord server ID into the `GUILD_ID` variable
+- Update the `S3_BUCKET_PREFIX` variable to point to where you told Moonwalker to save your moonwalks.
+
+> TODO: Add a section where the bucket is not public.
+
+
+### Filesystem mode
+
+If you configured your Moonwalker to use FS mode, then you will need to do the following:
+
+- Rename file `.env.fs` to `.env`
+- Paste your discord server ID into the `GUILD_ID` variable
+- Update the `FS_PATH` variable to point to where your Moonwalker bot is running. You should point to the `/records` folder where the moonwalks are serialized, do not end the value with a trailing slash.
+
+
+
+## In Action (locally)
+
+You can see the site in action by running 
+
+```bash
+npm run dev
 ```
 
-## GUILD_ID
+If everything goes well, you can visit `http://localhost:3000` to see a list of your threads, and click into them for the details.
 
-The `id` of your Discord Server where **Moonwalker** has published Forum Threads.
+## Generate static Html
 
-## MOONWALK_MODE
+The following command will generate a series of html files in a `/dist` folder.
 
-One of `s3` (AWS S3 Bucket) or `fs` (filesystem). This should match how **Moonwalker** is serializing your forum threads.
+```bash
+npm run build
+```
 
-## S3_BUCKET_PREFIX
+## Deploy
 
-Required if `MOONWALK_MODE` is `s3`.
+To deploy your site to the WWW, please follow the documentation in [docs.astro.build / deploys](https://docs.astro.build/en/guides/deploy/)
 
-This should point to the AWS Bucket (plus prefix) where **Moonwalker** saves the threads. Do NOT end it with `/`.
-
-## FS_PATH
-
-Required if `MOONWALK_MODE` is `fs`.
-
-This should point to the directory where **Moonwalker** saves the threads, include the `records` folder but NO `/` at the end.
 
 # Glossary
 
 ## Moonwalk
 
-A Discord Forum thread that has been published.
+A Discord Forum thread that has been published using the Moonwalker bot.
 
 ## Moonwalker
 
-The Discord Bot that serializes the forum threads (creates moonwalks).
+The Discord Bot that serializes the forum threads (creates moonwalks) into JSON files.
 
 # 🚀 Project Structure
 
